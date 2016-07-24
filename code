@@ -1,0 +1,266 @@
+#include<iostream.h>
+#include<stdio.h>
+#include<fstream.h>
+#include<conio.h>
+#include<stdlib.h>
+
+char P1,P2,P3;
+struct bank
+{
+ int account;
+ int balance;
+ char P1,P2,P3;
+
+};
+
+
+void deposit()
+ {
+ cout<<"                                   DEPOSITS\n\n\n";
+ifstream fin;
+fin.open("BANK.txt")  ;
+ofstream fout;
+fout.open("TEMP.txt");
+bank b1;
+int account;
+fin.read((char*)&b1,sizeof(b1));
+int amount;
+
+
+    cout<<"\nEnter Account Number:";
+    cin>>account;
+    cout<<"\n\nEnter 3 Digit Password:";
+    P1=getch();
+    cout<<"*";
+    P2=getch();   cout<<"*";
+    P3=getch();   cout<<"*";
+
+
+    while(!fin.eof())
+    {
+
+    if(account==b1.account && b1.P1==P1 && b1.P2==P2 && b1.P3==P3)
+    {   cout<<"\n\nMatch Success!";
+        cout<<"\n\nEnter Amount you want to Deposit:";
+        cin>>amount;
+        b1.balance=b1.balance+amount;
+        cout<<"\n\nYou have successfully deposited Rs."<<amount<<" into your account.\n\nYour Current Balance is:"<<b1.balance<<"\n\n";
+      fout.write((char*)&b1,sizeof(b1));
+       fin.read((char*)&b1,sizeof(b1));
+       goto end;
+    }
+    else
+   {
+   fout.write((char*)&b1,sizeof(b1));
+    fin.read((char*)&b1,sizeof(b1));
+        }  }
+        fout.write((char*)&b1,sizeof(b1));
+        cout<<"\n\nYou have entered invalid account number and/or password";
+        end:
+        fin.close();
+        fout.close();
+        remove("BANK.txt");
+        rename("TEMP.txt","BANK.txt");
+      cout<<"\nPRESS ENTER TO CONTINUE";
+      getch();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+  void withdraw()
+  {    cout<<"                                   WITHDRAW\n\n";
+ifstream fin;
+fin.open("BANK.txt")  ;
+ofstream fout;
+fout.open("TEMP.txt");
+bank b1;
+int account;
+fin.read((char*)&b1,sizeof(b1));
+int amount;
+
+    cout<<"\n\nEnter Account Number:";
+    cin>>account;
+     cout<<"\n\nEnter 3 Digit Password:";
+    P1=getch();
+    cout<<"*";
+    P2=getch();   cout<<"*";
+    P3=getch();   cout<<"*";
+
+
+    while(!fin.eof())
+    {
+
+     if(account==b1.account && b1.P1==P1 && b1.P2==P2 && b1.P3==P3)
+    {   cout<<"\n\nMatch Success!";
+        cout<<"\nEnter Amount you want to Withdraw:";
+        cin>>amount;
+        if(b1.balance>=amount)
+        {
+        b1.balance=b1.balance-amount;
+        cout<<"\n\nYou have successfully withdrawn Rs."<<amount;
+        cout<<" from your account.\n\nYour Current Balance is:"          ;
+        cout<<b1.balance<<"\n\n";
+
+      fout.write((char*)&b1,sizeof(b1));
+       fin.read((char*)&b1,sizeof(b1));
+       goto end;
+       }
+       else
+      { cout<<"NO CASH!!";
+       goto newend ;   }
+    }
+    else
+   {
+   fout.write((char*)&b1,sizeof(b1));
+    fin.read((char*)&b1,sizeof(b1));
+        } }
+        fout.write((char*)&b1,sizeof(b1));
+        cout<<"\n\nYou have entered invalid account number";
+        end:
+        fin.close();
+        fout.close();
+        remove("BANK.txt");
+        rename("TEMP.txt","BANK.txt");
+
+        newend:
+        fin.close();
+        fout.close();
+      cout<<"\nPRESS ENTER TO CONTINUE";
+      getch();
+
+   }
+
+
+  void checkbal()
+  {    cout<<"                                   CHECK MY BALANCE\n\n";
+ifstream fin;
+fin.open("BANK.txt")  ;
+bank b1;
+int account;
+fin.read((char*)&b1,sizeof(b1));
+
+    cout<<"\n\nEnter Account Number:";
+    cin>>account;
+                        cout<<"Enter 3 Digit Password:";
+    P1=getch();
+    cout<<"*";
+    P2=getch();   cout<<"*";
+    P3=getch();   cout<<"*";
+
+    while(!fin.eof())
+    {
+
+     if(account==b1.account && b1.P1==P1 && b1.P2==P2 && b1.P3==P3)
+    {   clrscr();
+     cout<<"\nMatch Success!\n";
+     cout<<"ACCOUNT NUMBER:"<< b1.account<<"\n\nBALANCE:"<<b1.balance; goto end;
+     }
+     fin.read((char*)&b1,sizeof(b1));
+     }
+        end:
+        fin.close();
+
+      cout<<"\nPRESS ENTER TO CONTINUE";
+      getch();
+
+
+}
+
+void addnew()
+{             cout<<"                                   NEW CUSTOMER\n\n";
+ofstream fout;
+ifstream chec;
+fout.open("BANK.txt",ios::app);
+chec.open("BANK.txt");
+bank b1,b2;
+chec.read((char*)&b2,sizeof(b1));
+randomize();
+b1.account=random(898)+101;
+while(!chec.eof())
+{
+if(b2.account==b1.account)
+b1.account=random(1000)+1;
+chec.read((char*)&b2,sizeof(b1));
+}
+
+cout<<"\n\nNEW ACCOUNT NUMBER:\n";
+cout<<b1.account;
+cout<<"\nENTER NEW PASSWORD\n\n";
+b1.P1=getche();   b1.P2=getche(); b1.P3=getche();
+
+b1.balance=0;
+fout.write((char*)&b1,sizeof(b1));
+fout.close();
+      cout<<"\n\nSuccess!";
+      cout<<"\nPRESS ENTER TO CONTINUE";
+      getch();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void main()
+{
+
+    char ch;
+    do {
+
+
+
+     cout<<"*****||/////||$||$$$$$||$$@@||///||@@||///||@||/@@@@||@||@@/**** \n";
+     cout<<"*****||$$$$$||$||$$$$$||$$@@||@@@||@@||@@@||@||@/@@@||@||@/*****  \n";
+     cout<<"*****||/////||$||$$$$$||$$@@||///||@@||///||@||@@/@@||@||/******   \n";
+     cout<<"*****||$$$$$$$$||$$$$$||$$@@||@@@@||@||@@@||@||@@@/@||@||@/*****  \n";
+     cout<<"*****||$$$$$$$$||$$$$$||$$@@||@@@@||@||@@@||@||@@@@/||@||@@/**** \n";
+     cout<<"*****||$$$$$$$$||/////||$$@@||////||@||@@ ||@||@@@@@||@||@@@/*** \n";
+     cout<<"                           WELCOMES YOU!";
+        cout<<"\n\n\n1.Deposit\n2.Withdraw\n3.Balance Enquiry\n4.Add New\n\n5.Exit\n";
+       ch=getch();
+        switch(ch)
+        {
+
+        case '1':
+        clrscr();
+        deposit();
+
+            break;
+        case '2':clrscr();
+        withdraw();
+            break;
+        case '3':clrscr();
+        checkbal();
+            break;
+        case '4':clrscr();
+        addnew();
+            break;
+        case '5':exit(0);
+        default:cout<<"Invalid Choice!!";
+        }
+            clrscr();
+    }while(1);
+}
+
